@@ -2049,28 +2049,31 @@ void ObjectMgr::LoadItemPrototypes()
                     sLog.outErrorDb("Item (Entry: %u) not correct %u spell id, must exist in spell table.", i, Spell.SpellId);
             }
 
-        if (dbcitem)
+        if (!(proto->ExtraFlags & ITEM_EXTRA_CUSTOM))
         {
-            if (proto->InventoryType != dbcitem->InventoryType)
+            if (dbcitem)
             {
-                sLog.outErrorDb("Item (Entry: %u) not correct %u inventory type, must be %u (still using DB value).", i, proto->InventoryType, dbcitem->InventoryType);
-                // It safe let use InventoryType from DB
-            }
+                if (proto->InventoryType != dbcitem->InventoryType)
+                {
+                    sLog.outErrorDb("Item (Entry: %u) not correct %u inventory type, must be %u (using it).", i, proto->InventoryType, dbcitem->InventoryType);
+                    const_cast<ItemPrototype*>(proto)->InventoryType = dbcitem->InventoryType;
+                }
 
-            if (proto->DisplayInfoID != dbcitem->DisplayId)
-            {
-                sLog.outErrorDb("Item (Entry: %u) not correct %u display id, must be %u (using it).", i, proto->DisplayInfoID, dbcitem->DisplayId);
-                const_cast<ItemPrototype*>(proto)->DisplayInfoID = dbcitem->DisplayId;
+                if (proto->DisplayInfoID != dbcitem->DisplayId)
+                {
+                    sLog.outErrorDb("Item (Entry: %u) not correct %u display id, must be %u (using it).", i, proto->DisplayInfoID, dbcitem->DisplayId);
+                    const_cast<ItemPrototype*>(proto)->DisplayInfoID = dbcitem->DisplayId;
+                }
+                if (proto->Sheath != dbcitem->Sheath)
+                {
+                    sLog.outErrorDb("Item (Entry: %u) not correct %u sheath, must be %u  (using it).", i, proto->Sheath, dbcitem->Sheath);
+                    const_cast<ItemPrototype*>(proto)->Sheath = dbcitem->Sheath;
+                }
             }
-            if (proto->Sheath != dbcitem->Sheath)
+            else
             {
-                sLog.outErrorDb("Item (Entry: %u) not correct %u sheath, must be %u  (using it).", i, proto->Sheath, dbcitem->Sheath);
-                const_cast<ItemPrototype*>(proto)->Sheath = dbcitem->Sheath;
+                sLog.outErrorDb("Item (Entry: %u) not correct (not listed in list of existing items).", i);
             }
-        }
-        else
-        {
-            sLog.outErrorDb("Item (Entry: %u) not correct (not listed in list of existing items).", i);
         }
 
         if (proto->Class >= MAX_ITEM_CLASS)
@@ -8858,6 +8861,9 @@ void ObjectMgr::LoadTrainers(char const* tableName, bool isTemplates)
 
         if (SpellMgr::IsProfessionSpell(spell))
             data.trainerType = 2;
+
+        if (mTrainerSpellSet.find(trainerSpell) == mTrainerSpellSet.end())
+            mTrainerSpellSet.insert(trainerSpell);
 
         ++count;
     }

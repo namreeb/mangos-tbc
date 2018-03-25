@@ -9,7 +9,23 @@ UPDATE gameobject_template SET ScriptName='';
 UPDATE item_template SET ScriptName='';
 UPDATE instance_template SET ScriptName='';
 UPDATE world_template SET ScriptName='';
-/*  */
+/* CUSTOM */
+-- Dual Specialization Crystal
+UPDATE item_template SET ScriptName='item_custom_dualspec' WHERE entry=21967;
+UPDATE creature_template SET ScriptName='npc_target_dummy' WHERE entry IN (100801,100800,100700); -- Beginner Training Dummy, Advanced Training Dummy, Grandmaster's Training Dummy
+UPDATE creature_template SET ScriptName='npc_enlistment_officer' WHERE entry IN (100501,100502,100503);
+UPDATE creature_template SET ScriptName='npc_vengeance_greeter' WHERE entry IN (100200,100300,101000);
+-- Instant 58
+-- Alliance Enlistment Officer 100501, Horde Enlistment Officer 100502
+-- Instant 70
+-- Master Provisioner 100503
+UPDATE creature_template SET ScriptName='npc_enchantment_crystal' WHERE entry=100600;
+-- Dual Specialization Crystal
+UPDATE creature_template SET ScriptName='npc_custom_dualspec' WHERE entry=100601;
+
+INSERT INTO script_texts (entry,content_default,sound,type,language,emote,comment) VALUES
+(-1800998, 'Hey $N, over here! I have everything you need to be prepared!', '0', '0', '0', '25', 'enlistment officer SAY_GREET_70'),
+(-1800999, '$N! Come talk to me before you go onward!', '0', '0', '0', '25', 'enlistment officer SAY_GREET');
 
 /* AREATRIGGER */
 INSERT INTO scripted_areatrigger VALUES

@@ -107,6 +107,12 @@ enum PlayerSpellState
     PLAYERSPELL_REMOVED         = 3
 };
 
+struct PlayerTalent
+{
+    PlayerSpellState state : 8;
+    uint8 spec : 8;
+};
+
 struct PlayerSpell
 {
     PlayerSpellState state : 8;
@@ -115,6 +121,7 @@ struct PlayerSpell
     bool disabled          : 1;                             // first rank has been learned in result talent learn but currently talent unlearned, save max learned ranks
 };
 
+typedef std::unordered_map<uint32, PlayerTalent> PlayerTalentMap;
 typedef std::unordered_map<uint32, PlayerSpell> PlayerSpellMap;
 
 struct SpellCooldown
@@ -739,6 +746,7 @@ enum PlayerLoginQueryIndex
     PLAYER_LOGIN_QUERY_LOADBGDATA,
     PLAYER_LOGIN_QUERY_LOADACCOUNTDATA,
     PLAYER_LOGIN_QUERY_LOADSKILLS,
+    PLAYER_LOGIN_QUERY_LOADTALENTS,
     PLAYER_LOGIN_QUERY_LOADMAILS,
     PLAYER_LOGIN_QUERY_LOADMAILEDITEMS,
     PLAYER_LOGIN_QUERY_LOADWEEKLYQUESTSTATUS,
@@ -1139,10 +1147,10 @@ class Player : public Unit
         InventoryResult CanUseAmmo(uint32 item) const;
         Item* StoreNewItem(ItemPosCountVec const& dest, uint32 item, bool update, int32 randomPropertyId = 0);
         Item* StoreItem(ItemPosCountVec const& dest, Item* pItem, bool update);
-        Item* EquipNewItem(uint16 pos, uint32 item, bool update);
+        Item* EquipNewItem(uint16 pos, uint32 item, bool update, int32 suffixOverride = 0);
         Item* EquipItem(uint16 pos, Item* pItem, bool update);
         void AutoUnequipOffhandIfNeed(uint8 bag = NULL_BAG);
-        bool StoreNewItemInBestSlots(uint32 titem_id, uint32 titem_amount);
+        bool StoreNewItemInBestSlots(uint32 titem_id, uint32 titem_amount, int32 suffixOverride = 0);
         Item* StoreNewItemInInventorySlot(uint32 itemEntry, uint32 amount);
 
         bool hasWeapon(WeaponAttackType type) const override { return GetWeaponForAttack(type, false, false); }
@@ -1221,6 +1229,9 @@ class Player : public Unit
         void SendItemDurations();
         void LoadCorpse();
         void LoadPet();
+
+        // voa custom
+        void EnchantItem(uint32 spellid, uint8 slot);
 
         uint32 m_stableSlots;
 
@@ -1489,6 +1500,7 @@ class Player : public Unit
         void RemovePetActionBar() const;
 
         bool HasSpell(uint32 spell) const override;
+        bool HasTalent(uint32 spell, uint8 spec) const;
         bool HasActiveSpell(uint32 spell) const;            // show in spellbook
         TrainerSpellState GetTrainerSpellState(TrainerSpell const* trainer_spell, uint32 reqLevel) const;
         bool IsSpellFitByClassAndRace(uint32 spell_id, uint32* pReqlevel = nullptr) const;
@@ -1508,6 +1520,9 @@ class Player : public Unit
         void learnQuestRewardedSpells();
         void learnQuestRewardedSpells(Quest const* quest);
         void learnSpellHighRank(uint32 spellid);
+        void learnClassLevelSpells(bool includeHighLevelQuestRewards = false);
+
+        void addTalent(uint32 spellId, uint8 spec, bool learning);
 
         uint32 GetFreeTalentPoints() const { return GetUInt32Value(PLAYER_CHARACTER_POINTS1); }
         void SetFreeTalentPoints(uint32 points) { SetUInt32Value(PLAYER_CHARACTER_POINTS1, points); }
@@ -1535,6 +1550,20 @@ class Player : public Unit
         void SetSpellClass(uint8 playerClass);
         SpellFamily GetSpellClass() const { return m_spellClassName; } // client function equivalent - says what player can cast
 
+        // dual spec
+        uint8 m_activeSpec;
+        uint8 m_specsCount;
+
+        void ActivateSpec(uint8 spec);
+        uint8 GetActiveSpec() { return m_activeSpec; }
+        void SetActiveSpec(uint8 spec) { m_activeSpec = spec; }
+        uint8 GetSpecsCount() { return m_specsCount; }
+        void SetSpecsCount(uint8 count) { m_specsCount = count; }
+
+        std::string GetSpecName(uint8 spec);
+        void SetSpecName(uint8 spec, const char* specName);
+        std::string specNames[MAX_TALENT_SPECS];
+
         void setResurrectRequestData(ObjectGuid guid, uint32 mapId, float X, float Y, float Z, uint32 health, uint32 mana)
         {
             m_resurrectGuid = guid;
@@ -1559,7 +1588,8 @@ class Player : public Unit
         static bool IsActionButtonDataValid(uint8 button, uint32 action, uint8 type, Player* player);
         ActionButton* addActionButton(uint8 button, uint32 action, uint8 type);
         void removeActionButton(uint8 button);
-        void SendInitialActionButtons() const;
+        void SendInitialActionButtons() const { SendActionButtons(1); }
+        void SendActionButtons(uint32 state) const;
 
         PvPInfo pvpInfo;
         void UpdatePvP(bool state, bool overriding = false);
@@ -2302,6 +2332,7 @@ class Player : public Unit
         void _LoadWeeklyQuestStatus(QueryResult* result);
         void _LoadMonthlyQuestStatus(QueryResult* result);
         void _LoadGroup(QueryResult* result);
+        void _LoadTalents(QueryResult* result);
         void _LoadSkills(QueryResult* result);
         void _LoadSpells(QueryResult* result);
         bool _LoadHomeBind(QueryResult* result);
@@ -2325,6 +2356,8 @@ class Player : public Unit
         void _SaveWeeklyQuestStatus();
         void _SaveMonthlyQuestStatus();
         void _SaveSkills();
+        void _SaveTalents();
+        void _SaveTalentSpecNames();
         void _SaveSpells();
         void _SaveBGData();
         void _SaveStats();
@@ -2388,6 +2421,7 @@ class Player : public Unit
 
         PlayerMails m_mail;
         PlayerSpellMap m_spells;
+        PlayerTalentMap m_talents[MAX_TALENT_SPECS];
 
         ActionButtonList m_actionButtons;
 

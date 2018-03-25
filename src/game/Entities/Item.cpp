@@ -1098,7 +1098,7 @@ void Item::SendTimeUpdate(Player* owner) const
     owner->GetSession()->SendPacket(data);
 }
 
-Item* Item::CreateItem(uint32 item, uint32 count, Player const* player, uint32 randomPropertyId)
+Item* Item::CreateItem(uint32 item, uint32 count, Player const* player, int32 randomPropertyId)
 {
     if (count < 1)
         return nullptr;                                        // don't create item at zero count
@@ -1114,7 +1114,7 @@ Item* Item::CreateItem(uint32 item, uint32 count, Player const* player, uint32 r
         if (pItem->Create(sObjectMgr.GenerateItemLowGuid(), item, player))
         {
             pItem->SetCount(count);
-            if (uint32 randId = randomPropertyId ? randomPropertyId : Item::GenerateItemRandomPropertyId(item))
+            if (int32 randId = randomPropertyId ? randomPropertyId : Item::GenerateItemRandomPropertyId(item))
                 pItem->SetItemRandomProperties(randId);
 
             return pItem;

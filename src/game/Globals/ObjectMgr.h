@@ -487,6 +487,7 @@ class ObjectMgr
         std::unordered_map<uint32, std::vector<uint32>> const& GetCreatureSpawnEntry() const { return mCreatureSpawnEntryMap; }
 
         std::vector<uint32> LoadGameobjectInfo();
+        std::set<TrainerSpell> const& GetTrainerSpells() const { return mTrainerSpellSet; }
 
         void PackGroupIds();
         Group* GetGroupById(uint32 id) const;
@@ -1237,6 +1238,8 @@ class ObjectMgr
         GossipMenuItemsMap  m_mGossipMenuItemsMap;
 
         std::unordered_map<uint32, std::vector<uint32>> mCreatureSpawnEntryMap;
+
+        std::set<TrainerSpell> mTrainerSpellSet;
 		
         PointOfInterestMap  mPointsOfInterest;
 

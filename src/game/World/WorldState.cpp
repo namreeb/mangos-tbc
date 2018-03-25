@@ -44,7 +44,7 @@ enum
 };
 
 WorldState::WorldState() : m_emeraldDragonsState(0xF), m_emeraldDragonsTimer(0), m_emeraldDragonsChosenPositions(4, 0), m_isMagtheridonHeadSpawnedHorde(false), m_isMagtheridonHeadSpawnedAlliance(false),
-    m_adalSongOfBattleTimer(0), m_expansion(EXPANSION_TBC), m_highlordKruulSpawned(false), m_highlordKruulTimer(0), m_highlordKruulChosenPosition(0)
+    m_adalSongOfBattleTimer(0), m_expansion(EXPANSION_TBC), m_restrictedTbcRacesBoosts(0), m_highlordKruulSpawned(false), m_highlordKruulTimer(0), m_highlordKruulChosenPosition(0)
 {
     m_transportStates[GROMGOL_UNDERCITY]    = GROMGOLUC_EVENT_1;
     m_transportStates[GROMGOL_ORGRIMMAR]    = OGUC_EVENT_1;
@@ -1363,6 +1363,40 @@ void WorldState::StartExpansionEvent()
         RespawnHighlordKruul();
     }
 }
+
+void WorldState::SetTbcRaceBoostRestriction(uint32 flags)
+{
+    uint32 oldFlags = m_restrictedTbcRacesBoosts;
+    m_restrictedTbcRacesBoosts = flags;
+    // tbc races
+    if ((oldFlags & BOOST_FLAG_TBC_RACES) == 0 && (flags & BOOST_FLAG_TBC_RACES))
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_TBC_RACES);
+    else if ((oldFlags & BOOST_FLAG_TBC_RACES) && (flags & BOOST_FLAG_TBC_RACES) == 0)
+        sGameEventMgr.StopEvent(GAME_EVENT_I58_RESTRICTION_TBC_RACES);
+    // horde races
+    if ((oldFlags & BOOST_FLAG_HORDE_RACES) == 0 && (flags & BOOST_FLAG_HORDE_RACES))
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_HORDE_RACES);
+    else if ((oldFlags & BOOST_FLAG_HORDE_RACES) && (flags & BOOST_FLAG_HORDE_RACES) == 0)
+        sGameEventMgr.StopEvent(GAME_EVENT_I58_RESTRICTION_HORDE_RACES);
+    // alliance races
+    if ((oldFlags & BOOST_FLAG_ALLIANCE_RACES) == 0 && (flags & BOOST_FLAG_ALLIANCE_RACES))
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_ALLIANCE_RACES);
+    else if ((oldFlags & BOOST_FLAG_ALLIANCE_RACES) && (flags & BOOST_FLAG_ALLIANCE_RACES) == 0)
+        sGameEventMgr.StopEvent(GAME_EVENT_I58_RESTRICTION_ALLIANCE_RACES);
+    Save(SAVE_ID_BOOST_RESTRICTIONS);
+}
+
+void WorldState::StartRestrictionEvent()
+{
+    uint32 flags = m_restrictedTbcRacesBoosts;
+    if (flags & BOOST_FLAG_TBC_RACES)
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_TBC_RACES);
+    if (flags & BOOST_FLAG_HORDE_RACES)
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_HORDE_RACES);
+    if (flags & BOOST_FLAG_ALLIANCE_RACES)
+        sGameEventMgr.StartEvent(GAME_EVENT_I58_RESTRICTION_ALLIANCE_RACES);
+}
+
 
 void WorldState::FillInitialWorldStates(ByteBuffer& data, uint32& count, uint32 zoneId, uint32 /*areaId*/)
 {

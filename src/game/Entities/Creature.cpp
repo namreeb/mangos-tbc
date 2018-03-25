@@ -957,7 +957,10 @@ bool Creature::IsTrainerOf(Player* pPlayer, bool msg) const
                         case CLASS_WARRIOR: pPlayer->GetPlayerMenu()->SendGossipMenu(4985, GetObjectGuid()); break;
                     }
                 }
-                return false;
+
+                // Vengeance Custom NPCs allowed to train regardless
+                if (GetEntry() < 100000)
+                    return false;
             }
             break;
         case TRAINER_TYPE_PETS:
