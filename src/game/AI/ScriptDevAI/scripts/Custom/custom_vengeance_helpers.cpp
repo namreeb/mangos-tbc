@@ -370,6 +370,7 @@ enum
     NPC_PET_HYENA   = 5986, // Rabid Snickerfang
     NPC_PET_OWL     = 7455, // Winterspring Owl
     NPC_PET_RAPTOR  = 687,  // Jungle Stalker
+    NPC_PET_RAVAGER = 19349,// Thornfang Ravager
     NPC_PET_STRIDER = 4725, // Crazed Sandstrider
     NPC_PET_SCORPID = 9695, // Deathlash Scorpid
     NPC_PET_SPIDER  = 8933, // Cave Creeper
@@ -1512,12 +1513,13 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "<- Previous Page", GOSSIP_SENDER_MAIN, 30);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Owl", GOSSIP_SENDER_MAIN, 510);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Raptor", GOSSIP_SENDER_MAIN, 511);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Strider", GOSSIP_SENDER_MAIN, 512);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Scorpid", GOSSIP_SENDER_MAIN, 513);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Serpent", GOSSIP_SENDER_MAIN, 514);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Spider", GOSSIP_SENDER_MAIN, 515);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Turtle", GOSSIP_SENDER_MAIN, 516);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Wolf", GOSSIP_SENDER_MAIN, 517);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Ravager", GOSSIP_SENDER_MAIN, 512);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Strider", GOSSIP_SENDER_MAIN, 513);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Scorpid", GOSSIP_SENDER_MAIN, 514);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Serpent", GOSSIP_SENDER_MAIN, 515);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Spider", GOSSIP_SENDER_MAIN, 516);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Turtle", GOSSIP_SENDER_MAIN, 517);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Wolf", GOSSIP_SENDER_MAIN, 518);
             player->SEND_GOSSIP_MENU(GOSSIP_TEXT_ENLIST_PET_MENU, creature->GetObjectGuid());
         }
 
@@ -1865,12 +1867,13 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         else if (action == 509) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_HYENA);
         else if (action == 510) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_OWL);
         else if (action == 511) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_RAPTOR);
-        else if (action == 512) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_STRIDER);
-        else if (action == 513) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SCORPID);
-        else if (action == 514) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SERPENT);
-        else if (action == 515) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SPIDER);
-        else if (action == 516) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_TURTLE);
-        else if (action == 517) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_WOLF);
+        else if (action == 512) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_RAVAGER);
+        else if (action == 513) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_STRIDER);
+        else if (action == 514) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SCORPID);
+        else if (action == 515) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SERPENT);
+        else if (action == 516) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_SPIDER);
+        else if (action == 517) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_TURTLE);
+        else if (action == 518) enlistmentOfficerAI->CreatePet(player, creature, NPC_PET_WOLF);
 
         // Classic Full Best in Slot
         // Pure DPS classes Hunter, Rogue, Mage, and Warlock don't require a secondary selection
