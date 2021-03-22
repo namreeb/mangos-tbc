@@ -364,7 +364,6 @@ class WorldState
         uint8 GetExpansion() const { return m_expansion; }
         bool SetExpansion(uint8 expansion);
 
-<<<<<<< HEAD
         // Suns reach reclamation
         void AddSunsReachProgress(uint32 questId);
         void HandleSunsReachPhaseTransition(uint32 newPhase);
@@ -373,12 +372,10 @@ class WorldState
         void StopSunsReachPhase(bool forward);
         void StartSunsReachPhase(bool initial = false);
         std::string GetSunsReachPrintout();
-=======
         // custom voa
         uint32 IsTbcRaceBoostRestricted() { return m_restrictedTbcRacesBoosts; }
         void SetTbcRaceBoostRestriction(uint32 flags);
         void StartRestrictionEvent();
->>>>>>> d98d169b3... VengeanceWoW Custom Features
 
         void FillInitialWorldStates(ByteBuffer& data, uint32& count, uint32 zoneId, uint32 areaId);
 
