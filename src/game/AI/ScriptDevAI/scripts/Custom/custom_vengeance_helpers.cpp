@@ -710,7 +710,7 @@ struct npc_enlistment_officerAI : public ScriptedAI
     {
         if (m_bCanGreet && pWho->GetTypeId() == TYPEID_PLAYER && m_creature->IsWithinDistInMap(pWho, 15.0f) && m_creature->IsWithinLOSInMap(pWho))
         {
-            if (((Player*)pWho)->isGameMaster())
+            if (((Player*)pWho)->IsGameMaster())
                 return;
 
             if ((pWho->getLevel() == 58 && ((((Player*)pWho)->GetTeam() == HORDE && m_creature->GetEntry() == NPC_HORDE_OFFICER) || (((Player*)pWho)->GetTeam() == ALLIANCE && m_creature->GetEntry() == NPC_ALLIANCE_OFFICER)))
