@@ -782,7 +782,7 @@ struct npc_enlistment_officerAI : public ScriptedAI
     {
         if (Creature* creatureTarget = m_creature->SummonCreature(entry, player->GetPositionX(), player->GetPositionY() + 2, player->GetPositionZ(), player->GetOrientation(), TEMPSPAWN_CORPSE_TIMED_DESPAWN, 500))
         {
-            creatureTarget->SetLevel(player->getLevel() - 1);
+            creatureTarget->SetLevel(player->getLevel());
 
             Pet* pet = new Pet(HUNTER_PET);
 
