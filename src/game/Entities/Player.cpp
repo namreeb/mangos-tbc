@@ -19897,6 +19897,11 @@ void Player::learnClassLevelSpells(bool includeHighLevelQuestRewards)
                 case SKILL_LOCKPICKING:
                     break;
                 default:
+                    // do not skip skills available to this class
+                    if (spellInfo->Effect[0] == SPELL_EFFECT_WEAPON &&
+                        spellInfo->Effect[1] == SPELL_EFFECT_PROFICIENCY)
+                        break;
+
                     continue;
             }
         }
