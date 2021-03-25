@@ -1,5 +1,4 @@
-DELETE FROM creature_template WHERE entry = 26310;
-INSERT INTO creature_template
+REPLACE INTO creature_template
 	(Entry, NAME, SubName, MinLevel, MaxLevel, ModelId1, Faction, Scale, CreatureType, NpcFlags, UnitFlags, UnitClass, VendorTemplateId) VALUES
 	(26310, "Namtiesh", "Consumables Vendor", 70, 70, 16164, 35, 0.4, 7, 128, 768, 1, 26305);
 
@@ -24,6 +23,7 @@ INSERT INTO npc_vendor_template
 	(26305, 22839, "Destruction Potion"),
 	(26305, 33052, "Fishermans Feast"),
 	(26305, 21342, "Core Felcloth Bag"),
+	(26305, 38082, "Gigantique Bag"),
 	(26305, 22841, "Major Fire Protection Potion"),
 	(26305, 22842, "Major Frost Protection Potion"),
 	(26305, 22844, "Major Nature Protection Potion"),
@@ -63,16 +63,12 @@ INSERT INTO npc_vendor_template
 	(26305, 3387, "Limited Invulnerability Potion"),
 	(26305, 22797, "Nightmare Seed"),
 	(26305, 8956, "Oil of Immolation"),
-	(26305, 5176, "Fire Totem"),
-	(26305, 5177, "Water Totem"),
-	(26305, 5178, "Air Totem"),
-	(26305, 5175, "Earth Totem"),
 	(26305, 34113, "Field Repair Bot 110G");
 
 DELETE FROM creature WHERE id = 26310;
 INSERT INTO creature (id, map, position_x, position_y, position_z, orientation) VALUES (26310, 530, -1965.574, 5081.579102, 11.374068, 3.057513);
 
-INSERT INTO npc_vendor (entry, item, comments) VALUES
+REPLACE INTO npc_vendor (entry, item, comments) VALUES
 	(26300, 28234, "Medallion of the Alliance"),
 	(26300, 28235, "Medallion of the Alliance"),
 	(26300, 28236, "Medallion of the Alliance"),
