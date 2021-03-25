@@ -826,7 +826,7 @@ struct npc_enlistment_officerAI : public ScriptedAI
             creatureTarget->ForcedDespawn();
 
             // prepare visual effect for levelup
-            pet->SetUInt32Value(UNIT_FIELD_LEVEL, level - 1);
+            pet->SetUInt32Value(UNIT_FIELD_LEVEL, level);
 
             // add pet object to the world
             pet->GetMap()->Add((Creature*)pet);
