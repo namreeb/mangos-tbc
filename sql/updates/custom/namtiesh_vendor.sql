@@ -55,6 +55,7 @@ INSERT INTO npc_vendor_template
 	(26305, 22824, "Elixir of Major Strength"),
 	(26305, 22840, "Elixir of Major Mageblood"),
 	(26305, 13452, "Elixir of the Mongoose"),
+	(26305, 32067, "Elixir of Draenic Wisdom"),
 	(26305, 28102, "Onslaught Elixir"),
 	(26305, 27656, "Sporeling Snack"),
 	(26305, 33874, "Kiblers Bits"),
