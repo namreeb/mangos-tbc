@@ -225,14 +225,14 @@ bool ScriptDevAIMgr::OnGossipSelect(Player* pPlayer, Item* pItem, uint32 uiSende
         if (!pTempScript->pGossipSelectItemWithCode)
             return false;
 
-        pPlayer->PlayerTalkClass->ClearMenus();
+        pPlayer->GetPlayerMenu()->ClearMenus();
         return pTempScript->pGossipSelectItemWithCode(pPlayer, pItem, uiSender, uiAction, code);
     }
 
     if (!pTempScript->pGossipSelectItem)
         return false;
 
-    pPlayer->PlayerTalkClass->ClearMenus();
+    pPlayer->GetPlayerMenu()->ClearMenus();
     return pTempScript->pGossipSelectItem(pPlayer, pItem, uiSender, uiAction);
 }
 

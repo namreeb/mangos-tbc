@@ -874,7 +874,7 @@ struct npc_enlistment_officerAI : public ScriptedAI
             pet->SavePetToDB(PET_SAVE_AS_CURRENT, player);
         }
 
-        player->PlayerTalkClass->CloseGossip();
+        player->GetPlayerMenu()->CloseGossip();
         creature->MonsterWhisper("An excellent choice! May it serve you well on the battlefield.", player);
     }
 
@@ -1489,7 +1489,7 @@ bool GossipHello_npc_enlistment_officer(Player* player, Creature* creature)
 
 bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 action)
 {
-    player->PlayerTalkClass->ClearMenus();
+    player->GetPlayerMenu()->ClearMenus();
     Pet* pPet = player->GetPet();
 
     if (npc_enlistment_officerAI* enlistmentOfficerAI = dynamic_cast<npc_enlistment_officerAI*>(creature->AI()))
@@ -1635,7 +1635,7 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
                 player->StoreNewItemInBestSlots(addMount, 1);
             }
 
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Learn Flight Paths
@@ -1645,7 +1645,7 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
             player->SetFacingToObject(creature);
             player->HandleEmote(EMOTE_ONESHOT_SALUTE);
             player->CastSpell(player, SPELL_CYCLONE_VISUAL_SPAWN, TRIGGERED_OLD_TRIGGERED);
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Choose Instant 70 Starter Set
@@ -1708,7 +1708,7 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         else if (action == 99 && (creature->GetEntry() == NPC_ALLIANCE_OFFICER || creature->GetEntry() == NPC_HORDE_OFFICER))
         {
             enlistmentOfficerAI->AddStarterSet(player, creature, SET_ID_INSTANT_58);
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Primary - Specialization 1
@@ -1736,7 +1736,7 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         else if (action > 600 && action < 700)
         {
             enlistmentOfficerAI->AddStarterSet(player, creature, SET_ID_TERTIARY, action - 600, 0);
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Primary - Specialization 2
@@ -1764,7 +1764,7 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         else if (action > 900 && action < 1000)
         {
             enlistmentOfficerAI->AddStarterSet(player, creature, SET_ID_TERTIARY, action - 900, 1);
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Primary - Specialization 3
@@ -1792,13 +1792,13 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         else if (action > 1200 && action < 1300)
         {
             enlistmentOfficerAI->AddStarterSet(player, creature, SET_ID_TERTIARY, action - 1200, 2);
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
         }
 
         // Untrain Pet
         else if (action == 499)
         {
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
 
             if (pPet && pPet->m_spells.size() >= 1)
             {
@@ -1835,19 +1835,19 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         // Unlearn Talents
         else if (action == 500)
         {
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
             player->resetTalents(true);
         }
         // Money!
         else if (action == 600)
         {
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
             player->ModifyMoney(INT_MAX);
         }
         // Unbind Instances
         else if (action == 700)
         {
-            player->PlayerTalkClass->CloseGossip();
+            player->GetPlayerMenu()->CloseGossip();
             for (uint8 i = 0; i < MAX_DIFFICULTY; ++i)
             {
                 Player::BoundInstancesMap& binds = player->GetBoundInstances(Difficulty(i));
@@ -1947,33 +1947,33 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
         }
         // Classic Full Best in Slot (Spec Selected)
         // Shaman - Restoration
-        case GOSSIP_ACTION_INFO_DEF + 2001: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanResto); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2001: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanResto); player->GetPlayerMenu()->CloseGossip(); break;
         // Shaman - Enhancement
-        case GOSSIP_ACTION_INFO_DEF + 2002: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanEnhancement); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2002: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanEnhancement); player->GetPlayerMenu()->CloseGossip(); break;
         // Shaman - Elemental
-        case GOSSIP_ACTION_INFO_DEF + 2003: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanElemental); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2003: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_ShamanElemental); player->GetPlayerMenu()->CloseGossip(); break;
         // Priest - Shadow
-        case GOSSIP_ACTION_INFO_DEF + 2004: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PriestShadow); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2004: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PriestShadow); player->GetPlayerMenu()->CloseGossip(); break;
         // Priest - Discipline/Holy
-        case GOSSIP_ACTION_INFO_DEF + 2005: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PriestDiscHoly); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2005: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PriestDiscHoly); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Holy
-        case GOSSIP_ACTION_INFO_DEF + 2006: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinHoly); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2006: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinHoly); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Retribution
-        case GOSSIP_ACTION_INFO_DEF + 2007: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinRetribution); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2007: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinRetribution); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Protection
-        case GOSSIP_ACTION_INFO_DEF + 2008: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinProtection); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2008: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_PaladinProtection); player->GetPlayerMenu()->CloseGossip(); break;
         // Warrior - Fury/Arms
-        case GOSSIP_ACTION_INFO_DEF + 2009: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_WarriorFuryArms); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2009: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_WarriorFuryArms); player->GetPlayerMenu()->CloseGossip(); break;
         // Warrior - Protection
-        case GOSSIP_ACTION_INFO_DEF + 2010: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_WarriorProtection); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2010: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_WarriorProtection); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Feral (Cat/DPS)
-        case GOSSIP_ACTION_INFO_DEF + 2011: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidFeralCat); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2011: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidFeralCat); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Feral (Bear/Tank)
-        case GOSSIP_ACTION_INFO_DEF + 2012: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidFeralBear); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2012: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidFeralBear); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Balance
-        case GOSSIP_ACTION_INFO_DEF + 2013: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidBalance); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2013: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidBalance); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Restoration
-        case GOSSIP_ACTION_INFO_DEF + 2014: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidResto); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 2014: enlistmentOfficerAI->GivePlayerItems(player, Lvl60BiS_DruidResto); player->GetPlayerMenu()->CloseGossip(); break;
 
         // TBC Full Best in Slot
         case GOSSIP_ACTION_INFO_DEF + 3000:
@@ -2036,33 +2036,33 @@ bool GossipSelect_npc_enlistment_officer(Player* player, Creature* creature, uin
 
         // TBC Full Best in Slot (Spec Selected)
         // Shaman - Restoration
-        case GOSSIP_ACTION_INFO_DEF + 3001: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanResto); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3001: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanResto); player->GetPlayerMenu()->CloseGossip(); break;
         // Shaman - Enhancement
-        case GOSSIP_ACTION_INFO_DEF + 3002: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanEnhancement); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3002: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanEnhancement); player->GetPlayerMenu()->CloseGossip(); break;
         // Shaman - Elemental
-        case GOSSIP_ACTION_INFO_DEF + 3003: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanElemental); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3003: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_ShamanElemental); player->GetPlayerMenu()->CloseGossip(); break;
         // Priest - Shadow
-        case GOSSIP_ACTION_INFO_DEF + 3004: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PriestShadow); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3004: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PriestShadow); player->GetPlayerMenu()->CloseGossip(); break;
         // Priest - Discipline/Holy
-        case GOSSIP_ACTION_INFO_DEF + 3005: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PriestDiscHoly); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3005: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PriestDiscHoly); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Holy
-        case GOSSIP_ACTION_INFO_DEF + 3006: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinHoly); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3006: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinHoly); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Retribution
-        case GOSSIP_ACTION_INFO_DEF + 3007: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinRetribution); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3007: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinRetribution); player->GetPlayerMenu()->CloseGossip(); break;
         // Paladin - Protection
-        case GOSSIP_ACTION_INFO_DEF + 3008: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinProtection); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3008: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_PaladinProtection); player->GetPlayerMenu()->CloseGossip(); break;
         // Warrior - Fury/Arms
-        case GOSSIP_ACTION_INFO_DEF + 3009: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_WarriorFuryArms); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3009: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_WarriorFuryArms); player->GetPlayerMenu()->CloseGossip(); break;
         // Warrior - Protection
-        case GOSSIP_ACTION_INFO_DEF + 3010: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_WarriorProtection); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3010: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_WarriorProtection); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Feral (Cat/DPS)
-        case GOSSIP_ACTION_INFO_DEF + 3011: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidFeralCat); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3011: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidFeralCat); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Feral (Bear/Tank)
-        case GOSSIP_ACTION_INFO_DEF + 3012: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidFeralBear); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3012: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidFeralBear); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Balance
-        case GOSSIP_ACTION_INFO_DEF + 3013: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidBalance); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3013: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidBalance); player->GetPlayerMenu()->CloseGossip(); break;
         // Druid - Restoration
-        case GOSSIP_ACTION_INFO_DEF + 3014: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidResto); player->PlayerTalkClass->CloseGossip(); break;
+        case GOSSIP_ACTION_INFO_DEF + 3014: enlistmentOfficerAI->GivePlayerItems(player, Lvl70BiS_DruidResto); player->GetPlayerMenu()->CloseGossip(); break;
     }
     }
 
@@ -2173,7 +2173,7 @@ bool GossipHello_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature)
     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Ranged", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 16);
     pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Shield", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
 
-    pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL, pCreature->GetObjectGuid());
+    pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL, pCreature->GetObjectGuid());
     return true;
 }
 
@@ -2194,7 +2194,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "20 Frost resistance", EQUIPMENT_SLOT_HEAD, 35457);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "8 all resistance", EQUIPMENT_SLOT_HEAD, 37889);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 2)
     {
@@ -2211,7 +2211,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "10 dodge 15 defense", EQUIPMENT_SLOT_SHOULDERS, 35433);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "15 dodge 10 defense", EQUIPMENT_SLOT_SHOULDERS, 35402);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 3)
     {
@@ -2227,7 +2227,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "120 armor", EQUIPMENT_SLOT_BACK, 27961);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "increase stealth", EQUIPMENT_SLOT_BACK, 25083);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 4)
     {
@@ -2238,7 +2238,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "150 hp", EQUIPMENT_SLOT_CHEST, 27957);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "150 Mana", EQUIPMENT_SLOT_CHEST, 27958);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 5)
     {
@@ -2253,7 +2253,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "6 mp5", EQUIPMENT_SLOT_WRISTS, 27913);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "9 spirit", EQUIPMENT_SLOT_WRISTS, 20009);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 6)
     {
@@ -2265,7 +2265,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "15 spell hit", EQUIPMENT_SLOT_HANDS, 33994);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "10 spell crit", EQUIPMENT_SLOT_HANDS, 33993);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 7)
     {
@@ -2274,7 +2274,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "35 spell damage 20 stamina", EQUIPMENT_SLOT_LEGS, 31372);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "66 healing 22 spell damage 20 stamina", EQUIPMENT_SLOT_LEGS, 31370);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 8)
     {
@@ -2285,7 +2285,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "12 stamina", EQUIPMENT_SLOT_FEET, 27950);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "4 hp/mp5", EQUIPMENT_SLOT_FEET, 27948);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 9)
     {
@@ -2294,7 +2294,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "20 healing 7 spell damage", EQUIPMENT_SLOT_FINGER1, 27926);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "2 damage to physical attacks", EQUIPMENT_SLOT_FINGER1, 27920);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 10)
     {
@@ -2303,7 +2303,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "20 healing 7 spell damage", EQUIPMENT_SLOT_FINGER2, 27926);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "2 physical damage", EQUIPMENT_SLOT_FINGER2, 27920);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 11)
     {
@@ -2311,7 +2311,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "35 agility", EQUIPMENT_SLOT_MAINHAND, 27977);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "9 physical damage", EQUIPMENT_SLOT_MAINHAND, 20030);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 12)
     {
@@ -2326,7 +2326,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "50 Arcane/Fire spell damage", EQUIPMENT_SLOT_MAINHAND, 27981);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Next Page ->", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 13)
     {
@@ -2342,7 +2342,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "54 Shadow/Frost spell damage", EQUIPMENT_SLOT_MAINHAND, 27982);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "<- Previous Page", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 14)
     {
@@ -2353,7 +2353,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "7 physical damage", EQUIPMENT_SLOT_OFFHAND, 27967);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Next Page ->", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 15)
     {
@@ -2366,7 +2366,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Adamantite Weapon Chain", EQUIPMENT_SLOT_OFFHAND, 42687);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "<- Previous Page", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu ", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 16)
     {
@@ -2374,7 +2374,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "30 hit", EQUIPMENT_SLOT_RANGED, 22779);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "12 Range damage", EQUIPMENT_SLOT_RANGED, 30252);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu ", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 17)
     {
@@ -2388,7 +2388,7 @@ bool GossipSelect_npc_enchantment_crystal(Player* pPlayer, Creature* pCreature, 
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "30 armor", EQUIPMENT_SLOT_OFFHAND, 13464);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "26-38 damage if blocked", EQUIPMENT_SLOT_OFFHAND, 29454);
         pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Main Menu", 0, 0);
-        pPlayer->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
+        pPlayer->GetPlayerMenu()->SendGossipMenu(GOSSIP_TEXT_CRYSTAL_2, pCreature->GetObjectGuid());
     }
     else if (uiAction == GOSSIP_ACTION_INFO_DEF + 0)
         GossipHello_npc_enchantment_crystal(pPlayer, pCreature);
@@ -2732,7 +2732,7 @@ bool GossipSelect_npc_vengeance_barber(Player* player, Creature* barber, uint32 
 
         // cannot affort
     case GOSSIP_ACTION_INFO_DEF + 8:
-        player->PlayerTalkClass->CloseGossip();
+        player->GetPlayerMenu()->CloseGossip();
         break;
 
     }

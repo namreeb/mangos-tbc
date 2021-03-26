@@ -16,7 +16,7 @@ enum
 
 bool GossipItemUse_custom_dualspec(Player* pPlayer, Item* pItem, const SpellCastTargets& /*pTargets*/)
 {
-    pPlayer->PlayerTalkClass->ClearMenus();
+    pPlayer->GetPlayerMenu()->ClearMenus();
 
     if (pPlayer->IsInCombat())
     {
