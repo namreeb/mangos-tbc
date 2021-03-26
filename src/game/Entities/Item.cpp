@@ -319,12 +319,12 @@ void Item::SaveToDB()
             if (uState == ITEM_NEW)
             {
                 stmt.reset(new SqlStatement(CharacterDatabase.CreateStatement(insItem, INSERT_ITEM)));
-                //printf("> Saving new item(%s) for guid[%u]. Thread is [%u]\n", GetProto()->Name1, GetOwnerGuid().GetCounter(), threadID);
+                sLog.outError("Item::SaveToDB(ITEM_NEW).  Guid: %u owner: %u", GetGUIDLow(), GetOwnerGuid().GetCounter());
             }
             else
             {
                 stmt.reset(new SqlStatement(CharacterDatabase.CreateStatement(updItem, UPDATE_ITEM)));
-                //printf("> Updating item(%s) for guid[%u]. Thread is [%u]\n", GetProto()->Name1, GetOwnerGuid().GetCounter(), threadID);
+                sLog.outError("Item::SaveToDB(%u).  Guid: %u owner: %u", uState, GetGUIDLow(), GetOwnerGuid().GetCounter());
             }
 
             stmt->addUInt32(GetOwnerGuid().GetCounter());
@@ -361,6 +361,7 @@ void Item::SaveToDB()
             {
                 static SqlStatementID updGifts;
                 stmt.reset(new SqlStatement(CharacterDatabase.CreateStatement(updGifts, UPDATE_GIFT)));
+                sLog.outError("Item::SaveToDB(ITEM_CHANGED WRAP).  Guid: %u owner: %u", GetGUIDLow(), GetOwnerGuid().GetCounter());
                 stmt->PExecute(GetOwnerGuid().GetCounter(), GetGUIDLow());
             }
 
@@ -380,6 +381,7 @@ void Item::SaveToDB()
             }
 
             SqlStatement stmt = CharacterDatabase.CreateStatement(delInst, DELETE_ITEM);
+            sLog.outError("Item::SaveToDB(ITEM_REMOVED).  Guid: %u owner: %u", GetGUIDLow(), GetOwnerGuid().GetCounter());
             stmt.PExecute(guid);
 
             if (HasFlag(ITEM_FIELD_FLAGS, ITEM_DYNFLAG_WRAPPED))
@@ -398,7 +400,10 @@ void Item::SaveToDB()
             return;
         }
         case ITEM_UNCHANGED:
+        {
+            sLog.outError("Item::SaveToDB(ITEM_UNCHANGED).  Guid: %u owner: %u", GetGUIDLow(), GetOwnerGuid().GetCounter());
             return;
+        }
     }
 
     if (m_lootState == ITEM_LOOT_CHANGED || m_lootState == ITEM_LOOT_REMOVED)
